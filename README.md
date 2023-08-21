@@ -24,14 +24,14 @@ You can easily verify using a TXT DNS record on `_name.domain.invalid`, with `na
 the recommended way of verifying a domain. verify-domain handles all queries and key generation for you.
 
 ```js
-const { getKey, verifyWithDNS } = require("verify-domain");
+const { getKey, verifyUsingDNS } = require("verify-domain");
 
 // name should be your application name or something similar
 const { match, domain } = await getKey("domain.invalid", "name");
 console.log(`You need to enter '${match}' as a TXT record into ${domain}`);
 
 try {
-  await verifyWithDNS("domain.invalid", "name");
+  await verifyUsingDNS("domain.invalid", "name");
   console.log("Verified!");
 } catch (err) {
   console.error(err);
@@ -44,14 +44,14 @@ You can also verify using HTTP(S) by letting users add a text file to `http://do
 `name` being the name you provided.
 
 ```js
-const { getKey, verifyWithHTTP } = require("verify-domain");
+const { getKey, verifyUsingHTTP } = require("verify-domain");
 
 // name should be your application name or something similar
 const { match, url } = await getKey("domain.invalid", "name");
 console.log(`You need to have a file with '${match}' at ${url}`);
 
 try {
-  await verifyWithHTTP("domain.invalid", "name");
+  await verifyUsingHTTP("domain.invalid", "name");
   console.log("Verified!");
 } catch (err) {
   console.error(err);
@@ -63,14 +63,17 @@ try {
 You can also pass in a `AbortSignal` to the options when verifying. This allows you to cancel the verification process
 as you desire, like after a certain amount of time.
 
+For DNS verification, a custom `DNSVerifyAbortError` will be thrown (which can be imported). For HTTP verification, a
+`DOMException` (Node.js global) will be thrown. In both cases, you can check that `error.name` is `AbortError`.
+
 ```js
-const { verifyWithHTTP } = require("verify-domain");
+const { verifyUsingHTTP } = require("verify-domain");
 
 const controller = new AbortController();
 const timeout = setTimeout(() => controller.abort(), 5_000); // Abort after 5 seconds
 
 try {
-  await verifyWithHTTP("domain.invalid", "name", { signal: controller.signal });
+  await verifyUsingHTTP("domain.invalid", "name", { signal: controller.signal });
   console.log("Verified!");
 } catch (error) {
   if (error.name === "AbortError") {

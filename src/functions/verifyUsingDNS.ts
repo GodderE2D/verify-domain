@@ -2,6 +2,7 @@ import { resolveTxt } from "node:dns/promises";
 import { VerificationFailedError } from "../errors/VerificationFailedError.js";
 import { getKey } from "./getKey.js";
 import type { VerifyOptions } from "../types/VerifyOptions.js";
+import { DNSVerifyAbortError } from "../errors/DNSVerifyAbortError.js";
 
 export function verifyUsingDNS(domain: string, name: string, options?: VerifyOptions) {
   if (typeof domain !== "string") throw new TypeError(`domain must be of type string, received ${typeof domain}.`);
@@ -15,9 +16,6 @@ export function verifyUsingDNS(domain: string, name: string, options?: VerifyOpt
       return resolve();
     });
 
-    options?.signal?.addEventListener("abort", () =>
-      // @ts-expect-error DOMException isn't typed, https://github.com/nodejs/undici/issues/1740
-      reject(new DOMException(`Verifying domain '${parsedDomain}' using DNS was aborted.`, "AbortError")),
-    );
+    options?.signal?.addEventListener("abort", () => reject(new DNSVerifyAbortError(parsedDomain)));
   });
 }
