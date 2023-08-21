@@ -1,0 +1,49 @@
+{
+  "name": "verify-domain",
+  "description": "Verify domain ownership using DNS or HTTP easily in Node.js",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup",
+    "lint": "eslint --fix .",
+    "lint:check": "eslint .",
+    "format": "prettier .",
+    "format:check": "prettier --check .",
+    "prepublishOnly": "yarn build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GodderE2D/verify-domain.git"
+  },
+  "keywords": [
+    "verify",
+    "domain",
+    "ownership",
+    "dns",
+    "http",
+    "https"
+  ],
+  "author": "GodderE2D <goddere2d@modslides.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/GodderE2D/verify-domain/issues"
+  },
+  "homepage": "https://github.com/GodderE2D/verify-domain#readme",
+  "devDependencies": {
+    "@sapphire/ts-config": "^4.0.1",
+    "@types/node": "^20.5.1",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "eslint": "^8.47.0",
+    "eslint-config-prettier": "^9.0.0",
+    "prettier": "^3.0.2",
+    "tsup": "^7.2.0",
+    "tsx": "^3.12.7",
+    "typescript": "^5.1.6"
+  },
+  "packageManager": "yarn@3.6.2",
+  "dependencies": {
+    "undici": "^5.23.0"
+  }
+}
